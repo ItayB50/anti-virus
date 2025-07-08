@@ -10,7 +10,7 @@ public:
 
 	using Sha256_t = std::string;
 
-	Antivirus(std::filesystem::path configPath, const int keyColumnIdx);
+	explicit Antivirus(const std::filesystem::path& configPath, const int keyColumnIdx = 0);
 
 	// Non copyapble/moveable
 	Antivirus& operator=(const Antivirus& other) = delete;
@@ -19,11 +19,11 @@ public:
 	Antivirus(const Antivirus& other) = delete;
 	Antivirus(Antivirus&& other) = delete;
 
-	std::map<Sha256_t, Detection> ScanRunningProcesses();
+	std::map<Sha256_t, Detection> ScanRunningProcesses() const;
 
 private:
-	bool LoadConfig(std::filesystem::path configPath, int keyColumnIdx);
-	bool ValidateConfig(infra::ConfigurationMap_t config);
+	bool LoadConfig(const std::filesystem::path& configPath, int keyColumnIdx);
+	bool ValidateConfig(const infra::ConfigurationMap_t& config);
 	
 	infra::ConfigurationMap_t _config;
 };

@@ -3,7 +3,7 @@
 #include "antivirus.h"
 
 
-Antivirus::Antivirus(std::filesystem::path configPath, const int keyColumnIdx)
+Antivirus::Antivirus(const std::filesystem::path& configPath, const int keyColumnIdx)
 {
     if (!LoadConfig(configPath, keyColumnIdx))
     {
@@ -11,7 +11,7 @@ Antivirus::Antivirus(std::filesystem::path configPath, const int keyColumnIdx)
     }
 }
 
-bool Antivirus::LoadConfig(std::filesystem::path configPath, int keyColumnIdx)
+bool Antivirus::LoadConfig(const std::filesystem::path& configPath, int keyColumnIdx)
 {
 	auto config = infra::readCsv(configPath, keyColumnIdx);
 	bool isValid = ValidateConfig(config);
@@ -22,7 +22,7 @@ bool Antivirus::LoadConfig(std::filesystem::path configPath, int keyColumnIdx)
 	return isValid;
 }
 
-bool Antivirus::ValidateConfig(infra::ConfigurationMap_t config)
+bool Antivirus::ValidateConfig(const infra::ConfigurationMap_t& config)
 {
 	bool isValid = (config.size() > 0);
 
@@ -31,7 +31,7 @@ bool Antivirus::ValidateConfig(infra::ConfigurationMap_t config)
 	return isValid;
 }
 
-std::map<Antivirus::Sha256_t, Detection> Antivirus::ScanRunningProcesses()
+std::map<Antivirus::Sha256_t, Detection> Antivirus::ScanRunningProcesses() const
 {
     // Order of values in config
     const int procNameIdx = 0;

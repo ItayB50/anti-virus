@@ -1,3 +1,4 @@
+#include <iostream>
 #include <windows.h>
 #include <tlhelp32.h>
 #include <tchar.h>
@@ -16,21 +17,21 @@ std::vector<infra::ProcessDescriptor> infra::getRunningProcesses()
     hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hProcessSnap == INVALID_HANDLE_VALUE)
     {
-        // TODO: Error to log
-        // printError(TEXT("CreateToolhelp32Snapshot (of processes)"));
+        std::cout << "Could not get running processes, CreateToolhelp32Snapshot failed, error" <<
+            GetLastError() << std::endl;
         return {};
     }
 
     // Set the size of the structure before using it.
     pe32.dwSize = sizeof(PROCESSENTRY32);
 
-    // Retrieve information about the first process,
+    // Retrieve information about the first process
     // and exit if unsuccessful
     if (!Process32First(hProcessSnap, &pe32))
     {
-        //printError(TEXT("Process32First")); // show cause of failure
+        std::cout << "Could not get running processes, Process32First failed, error" <<
+            GetLastError() << std::endl;
         CloseHandle(hProcessSnap);          // clean the snapshot object
-        // TODO: Error to log
         return {};
     }
 
@@ -45,26 +46,24 @@ std::vector<infra::ProcessDescriptor> infra::getRunningProcesses()
         HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pe32.th32ProcessID);
         if (hProcess == NULL)
         {
-            // TODO: Error to log, might be protected or system proccess
+            // TODO: print a Warning to log? might be protected or system proccess
             continue;
         }
 
         wchar_t arrImageFileName[MAX_PATH];
-        DWORD lpdwSize = MAX_PATH;
-        BOOL success = QueryFullProcessImageNameW(hProcess,0, arrImageFileName, &lpdwSize);
+        DWORD pathSize = MAX_PATH;
+        BOOL success = QueryFullProcessImageNameW(hProcess,0, arrImageFileName, &pathSize);
         if (success)
         {
             desc.path = std::wstring(arrImageFileName);
-
         }
         else
         {
-            // TODO: Error
+            std::cout << "QueryFullProcessImageName failed, error:" << GetLastError() << std::endl;
         }
 
         // Closing process handle
         CloseHandle(hProcess);
-
 
         vecRes.push_back(desc);
     } while (Process32Next(hProcessSnap, &pe32));
