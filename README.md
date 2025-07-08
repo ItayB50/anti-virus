@@ -2,7 +2,6 @@
 
 Simple C++ anti-virus library
 
-
 ## Platforms
 * Windows (msvc)
 
@@ -11,6 +10,16 @@ Simple C++ anti-virus library
 
 ## Features
 * Detects malicious running processes according to a predefined CSV file
+
+## Future Ideas
+
+- Add fast and robust logging library like spdlog
+- Use openssl for hash calculations (repleace current header only hash utils)
+- Provide UI to generate and validate configuration file
+- Implement multithreaded scanning to improve performance 
+- Add real-time process monitoring using low-level driver or ETW  
+- Integration with package manager like Conan
+
 
 ## Usage samples
 
