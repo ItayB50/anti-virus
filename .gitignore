@@ -1,0 +1,29 @@
+# Build artifacts
+[Bb]uild*/
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.iobj
+*.ipdb
+*.exp
+*.idb
+
+# Visual Studio
+.vscode/
+*.user
+*.suo
+*.vcxproj.user
+*.vcxproj.*.user
+*.opensdf
+*.sdf
+*.cache
+*.log
+*.tlog
+*.lastbuildstate
+*.VC.db
+*.VC.VC.opendb
